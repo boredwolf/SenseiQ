@@ -1,43 +1,27 @@
-import { useState } from 'react'
-import logo from './logo.svg'
+import { useEffect, useState } from 'react'
 import './App.css'
 
+
 function App() {
+  const [queue, setQueue] = useState([])
   const [count, setCount] = useState(0)
 
+async function fetchQueue() {
+const res = await fetch('https://localhost:3001/queue')
+setQueue(await res.json())
+
+}
+
+  useEffect(() => {
+    fetchQueue()
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>Hello Vite + React!</p>
-        <p>
-          <button type="button" onClick={() => setCount((count) => count + 1)}>
-            count is: {count}
-          </button>
-        </p>
-        <p>
-          Edit <code>App.jsx</code> and save to test HMR updates.
-        </p>
-        <p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-          {' | '}
-          <a
-            className="App-link"
-            href="https://vitejs.dev/guide/features.html"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Vite Docs
-          </a>
-        </p>
-      </header>
+    <div >
+      <h1>Sensei Q</h1>
+       {queue.map(q => {
+         <p key={q.id}>{q.id} : {q.name}</p>
+       })}
     </div>
   )
 }

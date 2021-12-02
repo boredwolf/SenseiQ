@@ -5,6 +5,6 @@ const setUpRoutes = (app) => {
 
 }
 
-module.export = {
+module.exports = {
     setUpRoutes,
 }

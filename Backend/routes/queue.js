@@ -1,23 +1,21 @@
 const router = require('express').Router()
-const db = require('../services/db')
+const queueModel = require('../models/queueModels') 
+
 
 // Retourne la file d'attente triée par date asc
-router.get("/", async (req, res) => {
+router.get("", async (req, res) => {
     try {
-      const [queue] = await db.query("SELECT * FROM queue ORDER BY created ");
-      res.send(queue);
+      res.send(await queueModel.findMany());
     } catch (e) {
       console.log(e);
       res.status(500).send("Unexpected error");
     }
   });
   // Insére une nouvelle ligne dans la queue
-  router.post("/", async (req, res) => {
+  router.post("", async (req, res) => {
     const { nom } = req.body;
     try {
-      await db.query("INSERT INTO queue (nom) VALUES (?)", [nom]);
-      const [result]  = await db.query('SELECT * FROM queue WHERE nom = ?', [nom])
-      res.status(201).send( result[0])
+      res.status(201).send( await queueModel.create(nom))
     } catch (e) {
       console.log(e);
       res.status(500).send("Unexpected error");
@@ -28,12 +26,11 @@ router.get("/", async (req, res) => {
   router.delete("/:id", async (req,res) => {
   const id = req.params.id
   try {
-  await db.query('DELETE FROM queue WHERE id = ?' , [id])
-  res.status(204).send()
+  res.status(204).send(queueModel.remove(id))
   } catch(e){
       console.log(e);
       res.status(500).send("Unexpected error");
   }
   })
 
-  module.export = router;
+  module.exports = router;

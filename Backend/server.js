@@ -1,9 +1,10 @@
+const dotenv = require("dotenv");
+dotenv.config();
 const express = require("express");
-const cors = require("cors")
+const cors = require("cors");
 const app = express();
 const port = 3001;
-const dotenv = require("dotenv");
-const { setUpRoutes } = require('./routes')
+const { setUpRoutes } = require("./routes");
 
 //middleware
 app.use(express.json());
@@ -11,12 +12,8 @@ app.use(express.json());
 //gestion des cors
 app.use(cors());
 
-// Charge les variables du fichier .env s'il existe
-dotenv.config();
-
-
 //Routes
-setUpRoutes(App)
+setUpRoutes(app);
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`);
